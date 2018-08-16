@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 
-var ipn = new mongoose.Schema(
+var schema = new mongoose.Schema(
   {
     ipnMessage: String,
     ipnPostback: String,
@@ -12,6 +12,6 @@ var ipn = new mongoose.Schema(
   }
 );
 
-var ipnMsg = mongoose.model('ipnMsg', ipn);
+var ipnMsg = mongoose.model('ipnMsg', schema);
 
 module.exports = ipnMsg;

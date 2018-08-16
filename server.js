@@ -2,14 +2,13 @@ var express = require('express');
 var queryString = require('querystring');
 var request = require('request');
 var bodyParser = require('body-parser');
-//var logger = require('../config/logger')
 var mongoose = require('mongoose');
 var newIPN = require('./models/ipn');
+var logger = require('./configs/logger');
 
 var app = express();
 app.use(bodyParser.urlencoded({	extended: false }))
 
-//mongodb://paypal:qqq123!@206.189.77.68:27018/paypal
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true });
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'DB Connection Error:'));
@@ -17,7 +16,7 @@ db.once('open', function() { console.log('Connected to DB: ' + process.env.MONGO
 
 app.post('/', function(req, res) {
   // Before anything else, log the IPN
-	console.log('New IPN Message: ' + JSON.stringify(req.body) + '\n');
+	logger.info('New IPN Message: ' + JSON.stringify(req.body));
 
 	// Read the IPN message sent from PayPal and prepend 'cmd=_notify-validate'
 	req.body = req.body || {};
@@ -31,7 +30,7 @@ app.post('/', function(req, res) {
 		postreq = postreq + "&" + key + "=" + value;
 	}
 
-	console.log("IPN Postback: " + postreq + '\n');
+	logger.debug("IPN Postback: " + postreq);
 
 	var options = {
 		url: 'https://www.sandbox.paypal.com/cgi-bin/webscr',
@@ -47,13 +46,11 @@ app.post('/', function(req, res) {
 	};
 
 	request(options, function callback(error, response, body) {
-		console.log(response.statusCode + ': ' + body + '\n');
+		logger.debug(response.statusCode + ': ' + body);
 		if (!error && response.statusCode === 200) {
 			// inspect IPN validation result and act accordingly
 			if (body.substring(0, 8) === 'VERIFIED') {
 				// The IPN is verified, process it
-				console.log('IPN Verified\n\n');
-
 				var item_name = req.body['item_name'];
 				var item_number = req.body['item_number'];
 				var payment_status = req.body['payment_status'];
@@ -64,14 +61,14 @@ app.post('/', function(req, res) {
 				var payer_email = req.body['payer_email'];
 
 				// To loop through the &_POST array and print the NV pairs to the screen:
-				console.log('IPN Data: ')
+				logger.debug('IPN Data: ')
 				for (var key in req.body) {
 					var value = req.body[key];
-					console.log(key + "=" + value);
+					logger.debug(key + "=" + value);
 				}
 			} else if (body.substring(0, 7) === 'INVALID') {
 				// IPN invalid, log for manual investigation
-				console.error('IPN Invalid: ' + body + '\n');
+				logger.error('IPN Invalid: ' + body);
 			}
 			// Save the IPN and associated data to MongoDB
 			newIPN.create({
@@ -80,7 +77,7 @@ app.post('/', function(req, res) {
 				status: body,
 				timestamp: new Date()
 			}, function(err, res){
-				if(err) console.log(err)
+				if(err) logger.error('DB Create Error' + err)
 			});
 		}
 	});
