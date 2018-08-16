@@ -10,25 +10,21 @@ app.use(bodyParser.urlencoded({	extended: false }))
 
 app.post('/', function(req, res) {
   // Before anything else, log the IPN
-	//logger.info('IPN Request: ' + req.body);
+	console.log('New IPN Message: ' + JSON.stringify(req.body) + '\n');
 
 	// Read the IPN message sent from PayPal and prepend 'cmd=_notify-validate'
 	req.body = req.body || {};
 	res.status(200).send('OK');
 	res.end();
 
-
-
-	req.body.cmd = "_notify-validate"
 	postreq = JSON.toString(req.body)
-	//console.log(req.body)
-
-
 	var postreq = 'cmd=_notify-validate';
 	for (var key in req.body) {
 		var value = queryString.escape(req.body[key]);
 		postreq = postreq + "&" + key + "=" + value;
 	}
+
+	console.log("IPN Postback: " + postreq + '\n');
 
 	var options = {
 		url: 'https://www.sandbox.paypal.com/cgi-bin/webscr',
@@ -44,7 +40,7 @@ app.post('/', function(req, res) {
 	};
 
 	request(options, function callback(error, response, body) {
-		console.log(response.statusCode);
+		console.log(response.statusCode + ': ' + body + '\n');
 		if (!error && response.statusCode === 200) {
 			// inspect IPN validation result and act accordingly
 			if (body.substring(0, 8) === 'VERIFIED') {
@@ -71,7 +67,7 @@ app.post('/', function(req, res) {
 
 			} else if (body.substring(0, 7) === 'INVALID') {
 				// IPN invalid, log for manual investigation
-				console.log('IPN Invalid: ' + body);
+				console.error('IPN Invalid: ' + body + '\n');
 			}
 		}
 	});
@@ -80,5 +76,5 @@ app.post('/', function(req, res) {
 var port = null;
 if(process.env.PORT){ port = process.env.PORT; }else{ port = 3000; } // Default port is 8888 unless passed
 app.listen(port);
-var msg = 'Listening for IPN\'s at http://localhost:' + port;
+var msg = 'Listening for IPN\'s at http://localhost:' + port + '\n';
 console.log(msg);
