@@ -3,10 +3,17 @@ var queryString = require('querystring');
 var request = require('request');
 var bodyParser = require('body-parser');
 //var logger = require('../config/logger')
+var mongoose = require('mongoose');
+var newIPN = require('./models/ipn');
 
 var app = express();
 app.use(bodyParser.urlencoded({	extended: false }))
 
+//mongodb://paypal:qqq123!@206.189.77.68:27018/paypal
+mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true });
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'DB Connection Error:'));
+db.once('open', function() { console.log('Connected to DB: ' + process.env.MONGO_URI + '\n') });
 
 app.post('/', function(req, res) {
   // Before anything else, log the IPN
@@ -62,13 +69,19 @@ app.post('/', function(req, res) {
 					var value = req.body[key];
 					console.log(key + "=" + value);
 				}
-
-        // Save the IPN and associated data to MongoDB
-
 			} else if (body.substring(0, 7) === 'INVALID') {
 				// IPN invalid, log for manual investigation
 				console.error('IPN Invalid: ' + body + '\n');
 			}
+			// Save the IPN and associated data to MongoDB
+			newIPN.create({
+				ipnMessage: JSON.stringify(req.body),
+				ipnPostback: postreq,
+				status: body,
+				timestamp: new Date()
+			}, function(err, res){
+				if(err) console.log(err)
+			});
 		}
 	});
 });
@@ -76,5 +89,5 @@ app.post('/', function(req, res) {
 var port = null;
 if(process.env.PORT){ port = process.env.PORT; }else{ port = 3000; } // Default port is 8888 unless passed
 app.listen(port);
-var msg = 'Listening for IPN\'s at http://localhost:' + port + '\n';
+var msg = 'Listening for IPN\'s at http://localhost:' + port;
 console.log(msg);
