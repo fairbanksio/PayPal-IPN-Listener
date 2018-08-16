@@ -1,3 +1,5 @@
-# paypal-ipn-listener
-Listen for paypal ipn events
 # PayPal-IPN-Listener
+Listen for PayPal IPN events
+# Install
+1. npm install
+2. node server.js
