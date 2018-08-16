@@ -71,7 +71,7 @@ app.post('/', function(req, res) {
 
 			} else if (body.substring(0, 7) === 'INVALID') {
 				// IPN invalid, log for manual investigation
-				logger.error('IPN Invalid: ' + body);
+				console.log('IPN Invalid: ' + body);
 			}
 		}
 	});
