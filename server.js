@@ -77,7 +77,8 @@ app.post('/', function(req, res) {
 	});
 });
 
-var port = 3000;
+var port = null;
+if(process.env.PORT){ port = process.env.PORT; }else{ port = 3000; } // Default port is 8888 unless passed
 app.listen(port);
-var msg = 'Listening at http://localhost:' + port;
+var msg = 'Listening for IPN\'s at http://localhost:' + port;
 console.log(msg);
