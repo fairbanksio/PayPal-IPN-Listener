@@ -14,6 +14,8 @@ var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'DB Connection Error:'));
 db.once('open', function() { console.log('Connected to DB: ' + process.env.MONGO_URI + '\n') });
 
+app.get('/', function(req, res){ res.send('OK'); }) // Essentially just a health check
+
 app.post('/', function(req, res) {
   // Before anything else, log the IPN
 	logger.info('New IPN Message: ' + JSON.stringify(req.body));
