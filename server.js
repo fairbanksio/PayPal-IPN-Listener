@@ -74,7 +74,7 @@ app.post('/', function(req, res) {
 			}
 			// Save the IPN and associated data to MongoDB
 			newIPN.create({
-				ipnMessage: JSON.stringify(req.body),
+				ipnMessage: req.body,
 				ipnPostback: postreq,
 				status: body,
 				timestamp: new Date()
