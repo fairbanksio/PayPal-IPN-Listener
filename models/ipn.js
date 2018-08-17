@@ -2,6 +2,7 @@ var mongoose = require('mongoose');
 
 var schema = new mongoose.Schema(
   {
+    ipnMessageRaw: String,
     ipnMessage: {
       mc_gross: String,
       protection_eligibility: String,
