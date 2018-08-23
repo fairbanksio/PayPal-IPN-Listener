@@ -78,7 +78,7 @@ app.post('/', function(req, res) {
 				ipnMessage: req.body,
 				ipnPostback: postreq,
 				status: body,
-				timestamp: new Date()
+				timestamp: Date.now()
 			}, function(err, res){
 				if(err) logger.error('DB Create Error' + err)
 			});

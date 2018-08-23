@@ -46,7 +46,7 @@ var schema = new mongoose.Schema(
     },
     ipnPostback: String,
     status: String,
-    timestamp: String,
+    timestamp: Date
   }, {
     collection: 'ipn',
     versionKey: false
