@@ -29,10 +29,10 @@ cd PayPal-IPN-Listener/
 
 ```
 # Install Dependencies
-yarn install
+npm install
 
 # Start Server
-yarn start
+npm start
 ```
 
 The IPN listener should now be running on http://localhost:8888

@@ -49,7 +49,7 @@ app.post('/', (req, res) => {
 		agent: false
 	};
 
-	request(options, callback(error, response, body) => {
+	request(options, function callback(error, response, body) {
 		logger.debug(response.statusCode + ': ' + body);
 		if (!error && response.statusCode === 200) {
 			// inspect IPN validation result and act accordingly
