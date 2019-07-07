@@ -9,14 +9,16 @@ var logger = require('./configs/logger');
 var app = express();
 app.use(bodyParser.urlencoded({	extended: false }))
 
-mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true });
+const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost/paypal";
+
+mongoose.connect(MONGO_URI, { useNewUrlParser: true });
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'DB Connection Error:'));
-db.once('open', function() { console.log('Connected to DB: ' + process.env.MONGO_URI + '\n') });
+db.once('open', () => { console.log('Connected to DB: ' + MONGO_URI + '\n') });
 
-app.get('/', function(req, res){ res.send('OK'); }) // Essentially just a health check
+app.get('/', (req, res) => { res.send('OK'); }) // Health check
 
-app.post('/', function(req, res) {
+app.post('/', (req, res) => {
   // Before anything else, log the IPN
 	logger.info('New IPN Message: ' + JSON.stringify(req.body));
 
@@ -47,7 +49,7 @@ app.post('/', function(req, res) {
 		agent: false
 	};
 
-	request(options, function callback(error, response, body) {
+	request(options, callback(error, response, body) => {
 		logger.debug(response.statusCode + ': ' + body);
 		if (!error && response.statusCode === 200) {
 			// inspect IPN validation result and act accordingly
@@ -79,15 +81,13 @@ app.post('/', function(req, res) {
 				ipnPostback: postreq,
 				status: body,
 				timestamp: Date.now()
-			}, function(err, res){
+			}, (err, res) => {
 				if(err) logger.error('DB Create Error' + err)
 			});
 		}
 	});
 });
 
-var port = null;
-if(process.env.PORT){ port = process.env.PORT; }else{ port = 8888; } // Default port is 8888 unless passed
+const port = process.env.PORT || 8888;
 app.listen(port);
-var msg = 'Listening for IPN\'s at http://localhost:' + port;
-console.log(msg);
+console.log('Listening for IPN\'s at http://localhost:' + port);
