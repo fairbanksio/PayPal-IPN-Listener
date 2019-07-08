@@ -4,7 +4,11 @@
 
 A Node.js and MongoDB based listener for PayPal IPN events.
 
+![Docker Cloud Automated build](https://img.shields.io/docker/cloud/automated/Fairbanks-io/PayPal-IPN-Listener.svg)
+![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/Fairbanks-io/PayPal-IPN-Listener.svg)
 ![GitHub top language](https://img.shields.io/github/languages/top/Fairbanks-io/PayPal-IPN-Listener.svg)
+![Docker Pulls](https://img.shields.io/docker/pulls/jonfairbanks/yo-client.svg)
+![GitHub](https://img.shields.io/github/license/Fairbanks-io/PayPal-IPN-Listener.svg)
 ![GitHub last commit](https://img.shields.io/github/last-commit/Fairbanks-io/PayPal-IPN-Listener.svg)
 
 ## Getting Started
