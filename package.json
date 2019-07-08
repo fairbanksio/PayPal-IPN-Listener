@@ -4,14 +4,23 @@
   "description": "Node.js & MongoDB based PayPal IPN Listener",
   "main": "server.js",
   "dependencies": {
+    "body-parser": "^1.19.0",
     "express": "^4.15.4",
-    "request": "^2.81.0",
     "mongoose": "^5.2.7",
+    "request": "^2.81.0",
     "winston": "^3.0.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-plugin-import": "^2.18.0",
+    "eslint-plugin-jsx-a11y": "^6.2.2",
+    "eslint-plugin-react": "^7.14.2"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Warning: no test(s) specified\" && exit 0",
+    "lint": "./node_modules/eslint/bin/eslint.js .",
+    "lint-fix": "./node_modules/eslint/bin/eslint.js . --fix"
   },
   "repository": {
     "type": "git",
