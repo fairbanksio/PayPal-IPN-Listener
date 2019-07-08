@@ -74,7 +74,7 @@ The IPN listener should now be available on the URL configured when setting up N
 
 | ENV | Required? | Details | Example |
 |----------------|-----------|------------------------------------------------------------------------------------------------|--------------------------------------------------|
-| `MONGO_URI` | No | What Mongo instance to use. If the ENV is not provided,  `mongodb://localhost/paypal` is used. | `mongodb://user:password@localhost:27018/paypal` |
+| `MONGO_URI` | No | What Mongo instance to use. If the ENV is not provided, `mongodb://localhost/paypal` is used. | `mongodb://user:password@localhost:27018/paypal` |
 | `LOG_LOCATION` | No | Override where the IPN log is written. By default the log is written into the app directory. | `/Logs/ipn.log` |
 | `PORT` | No | Override the application port. Defaults to 8888. | `8889` |
 
