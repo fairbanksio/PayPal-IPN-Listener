@@ -1,6 +1,6 @@
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
-var schema = new mongoose.Schema(
+const schema = new mongoose.Schema(
   {
     ipnMessageRaw: String,
     ipnMessage: {
@@ -42,17 +42,17 @@ var schema = new mongoose.Schema(
       test_ipn: String,
       transaction_subject: String,
       payment_gross: String,
-      ipn_track_id: String
+      ipn_track_id: String,
     },
     ipnPostback: String,
     status: String,
-    timestamp: Date
+    timestamp: Date,
   }, {
     collection: 'ipn',
-    versionKey: false
-  }
+    versionKey: false,
+  },
 );
 
-var ipnMsg = mongoose.model('ipnMsg', schema);
+const ipnMsg = mongoose.model('ipnMsg', schema);
 
 module.exports = ipnMsg;
