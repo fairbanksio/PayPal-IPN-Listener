@@ -18,7 +18,7 @@ A Node.js and MongoDB based listener for PayPal IPN events.
 The following will need to be installed before proceeding:
 
 - Node v8+
-- Mongo DB
+- MongoDB
 - Nginx
 
 #### Clone the Project
@@ -41,7 +41,34 @@ npm start
 
 The IPN listener should now be running on http://localhost:8888
 
+## Docker
+
+This IPN Listener is also available on [Dockerhub](https://hub.docker.com/r/fairbanksio/paypal-ipn-listener).
+
+To launch the Dockerfile, the following can be used as an example:
+```sh
+docker run -d -p 8888:8888 -e 'MONGO_URI=mongodb://user:password@localhost:27018/paypal' --restart unless-stopped --name 'paypal-ipn' fairbanksio/paypal-ipn-listener
+```
+
+The IPN listener should now be running on http://localhost:8888
+
+If you need to get into the container for some reason, simply run the following on the Docker host:
+```sh
+docker exec -it paypal-ipn /bin/bash
+```
+
+## Environment Variables
+
+| ENV | Required? | Details | Example |
+|----------------|-----------|------------------------------------------------------------------------------------------------|--------------------------------------------------|
+| `MONGO_URI` | No | What Mongo instance to use. If the ENV is not provided, `mongodb://localhost/paypal` is used. | `mongodb://user:password@localhost:27018/paypal` |
+| `LOG_LOCATION` | No | Override where the IPN log is written. By default the log is written into the app directory. | `/Logs/ipn.log` |
+| `PORT` | No | Override the application port. Defaults to 8888. | `8889` |
+
 ## Configure Nginx
+
+PayPal requires that your IPN Listener be hosted on an HTTPS enabled domain. To achieve both of those, you can use an Nginx reverse proxy with the following configuration:
+
 ```
 server {
     if ($host = ipn.mysite.io) {
@@ -68,19 +95,4 @@ server {
 }
 ```
 
-The IPN listener should now be available on the URL configured when setting up Nginx. To complete setup, [update your IPN url](https://developer.paypal.com/docs/classic/ipn/integration-guide/IPNSetup/) with PayPal and run a test payment.
-
-## Set Environment Variables
-
-| ENV | Required? | Details | Example |
-|----------------|-----------|------------------------------------------------------------------------------------------------|--------------------------------------------------|
-| `MONGO_URI` | No | What Mongo instance to use. If the ENV is not provided, `mongodb://localhost/paypal` is used. | `mongodb://user:password@localhost:27018/paypal` |
-| `LOG_LOCATION` | No | Override where the IPN log is written. By default the log is written into the app directory. | `/Logs/ipn.log` |
-| `PORT` | No | Override the application port. Defaults to 8888. | `8889` |
-
-## Docker
-
-This IPN Listener is also available on [Dockerhub](https://hub.docker.com/r/fairbanksio/paypal-ipn-listener).
-```sh
-docker run -d -p 8888:8888 --name 'paypal-ipn' fairbanksio/paypal-ipn-listener
-```
+The IPN listener should now be available on the URL configured when setting up Nginx. To complete setup, [update your IPN url](https://developer.paypal.com/docs/classic/ipn/integration-guide/IPNSetup/) on PayPal and run a test payment with the [IPN Simulator](https://developer.paypal.com/developer/ipnSimulator/).
