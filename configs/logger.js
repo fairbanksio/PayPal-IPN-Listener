@@ -1,8 +1,27 @@
-const winston = require('winston');
+const { createLogger, format, transports } = require('winston');
+const { combine, timestamp, printf } = format;
+require('winston-daily-rotate-file');
 
-const logger = winston.createLogger({
+const customFormat = printf(({ level, message, timestamp }) => {
+  return `${timestamp} [${level}]: ${message}`;
+});
+
+const transportDailyRotateLog = new transports.DailyRotateFile({
+  filename: 'ipn-%DATE%.log',
+  datePattern: 'YYYY-MM-DD-HH',
+  zippedArchive: true,
+  maxSize: '20m',
+  maxFiles: '14d'
+});
+
+const logger = createLogger({
+  format: combine(
+    timestamp(),
+    customFormat
+  ),
   transports: [
-    new winston.transports.File({ filename: process.env.LOG_LOCATION || 'ipn.log' }),
+    new transports.Console(),
+    transportDailyRotateLog
   ],
 });
 
