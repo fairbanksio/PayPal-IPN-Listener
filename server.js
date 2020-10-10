@@ -25,10 +25,9 @@ const connectToDB = () => {
 connectToDB();
 
 mongoose.connection.on('connected', () => {
-  console.log('PayPal IPN is connected to MongoDB...'); // eslint-disable-line no-console
   const port = process.env.PORT || 8888;
   app.listen(port);
-  console.log(`Listening for IPN's at http://localhost:${port}`); // eslint-disable-line no-console
+  console.log(`Listening for PayPal IPN's at http://localhost:${port}`); // eslint-disable-line no-console
 });
 
 mongoose.connection.on('disconnected', (err) => {
