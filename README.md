@@ -17,7 +17,7 @@ A Node.js and MongoDB based listener for PayPal IPN events.
 
 The following will need to be installed before proceeding:
 
-- Node v8+
+- Node v12+
 - MongoDB
 - Nginx
 
