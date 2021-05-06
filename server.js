@@ -6,7 +6,7 @@ const newIPN = require('./models/ipn');
 const logger = require('./configs/logger');
 
 const app = express();
-app.use(bodyParser.urlencoded({	extended: false	}));
+app.use(bodyParser.urlencoded({ extended: false }));
 
 const connectToDB = () => {
   mongoose.connect(
@@ -18,16 +18,17 @@ const connectToDB = () => {
       useUnifiedTopology: true,
     },
   ).catch(
-    err => console.warn(`MongoDB connect error: ${err}`) // eslint-disable-line no-console
+    (err) => console.warn(`MongoDB connect error: ${err}`), // eslint-disable-line no-console
   );
 };
 
 connectToDB();
 
 mongoose.connection.on('connected', () => {
+  console.log('PayPal IPN is connected to MongoDB...'); // eslint-disable-line no-console
   const port = process.env.PORT || 8888;
   app.listen(port);
-  console.log(`Listening for PayPal IPN's at http://localhost:${port}`); // eslint-disable-line no-console
+  console.log(`Listening for IPN's at http://localhost:${port}`); // eslint-disable-line no-console
 });
 
 mongoose.connection.on('disconnected', (err) => {
@@ -40,13 +41,13 @@ mongoose.connection.on('error', (err) => {
   setTimeout(() => { connectToDB(); }, 3000);
 });
 
-let paypal_url = null;
-if (process.env.PAYPAL_ENV && process.env.PAYPAL_ENV.toUpperCase() === "LIVE") {
-  paypal_url = 'https://www.paypal.com/cgi-bin/webscr';
-} else if (process.env.PAYPAL_ENV && process.env.PAYPAL_ENV.toUpperCase() === "SANDBOX") {
-  paypal_url = 'https://www.sandbox.paypal.com/cgi-bin/webscr';
+let paypalUrl = null;
+if (process.env.PAYPAL_ENV && process.env.PAYPAL_ENV.toUpperCase() === 'LIVE') {
+  paypalUrl = 'https://www.paypal.com/cgi-bin/webscr';
+} else if (process.env.PAYPAL_ENV && process.env.PAYPAL_ENV.toUpperCase() === 'SANDBOX') {
+  paypalUrl = 'https://www.sandbox.paypal.com/cgi-bin/webscr';
 } else {
-  paypal_url = 'https://www.sandbox.paypal.com/cgi-bin/webscr';
+  paypalUrl = 'https://www.sandbox.paypal.com/cgi-bin/webscr';
 }
 
 app.get('/', (_req, res) => { res.send('OK'); }); // Health check
@@ -67,7 +68,7 @@ app.post('/', (req, res) => {
   logger.debug(`[${Date.now()}] IPN Postback: ${postreq}`);
 
   const options = {
-    url: paypal_url,
+    url: paypalUrl,
     method: 'POST',
     headers: {
       Connection: 'close',
@@ -102,7 +103,7 @@ app.post('/', (req, res) => {
         timestamp: Date.now(),
       }, (err) => {
         if (err) logger.error(`[${Date.now()}] DB Create Error${err}`);
-      }).catch(err => {logger.error(`[${Date.now()}] DB Create Error${err}`);});
+      }).catch((err) => { logger.error(`[${Date.now()}] DB Create Error${err}`); });
     }
   });
 });
