@@ -17,7 +17,7 @@
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-react": "^7.21.4",
-    "eslint-plugin-spellcheck": "^0.0.17"
+    "eslint-plugin-spellcheck": "^0.0.19"
   },
   "scripts": {
     "test": "echo \"Warning: no test(s) specified\" && exit 0",
