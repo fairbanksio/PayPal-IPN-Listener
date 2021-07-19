@@ -12,7 +12,7 @@
     "winston-daily-rotate-file": "^4.5.4"
   },
   "devDependencies": {
-    "eslint": "^7.25.0",
+    "eslint": "^7.31.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-jsx-a11y": "^6.4.1",
