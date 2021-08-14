@@ -1,5 +1,5 @@
 # Base
-FROM node:12-slim as base
+FROM node:14-slim as base
 ENV NODE_ENV=production
 ENV TINI_VERSION v0.18.0
 ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
@@ -16,7 +16,7 @@ FROM base as dev
 ENV NODE_ENV=development
 ENV PATH=/app/node_modules/.bin:$PATH
 RUN npm install --only=development --no-optional --silent && npm cache clean --force > "/dev/null" 2>&1
-CMD ["nodemon", "server.js", "--inspect=0.0.0.0:9229"]
+CMD ["nodemon", "index.js", "--inspect=0.0.0.0:9229"]
 
 # Source
 FROM base as source
@@ -42,4 +42,4 @@ RUN /microscanner $MICROSCANNER_TOKEN --continue-on-failure
 # Production ENV
 FROM source as prod
 ENTRYPOINT ["/tini", "--"]
-CMD ["node", "server.js"]
+CMD ["node", "index.js"]
