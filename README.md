@@ -4,12 +4,12 @@
 
 A Node.js and MongoDB based listener for PayPal IPN events.
 
-![Docker Cloud Automated build](https://img.shields.io/docker/cloud/automated/fairbanksio/paypal-ipn-listener.svg)
-![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/fairbanksio/paypal-ipn-listener.svg)
+![GitHub Workflow Status](<https://img.shields.io/github/workflow/status/Fairbanks-io/PayPal-IPN-Listener/Create%20Release(s)?label=Docker%20Build>)
 ![GitHub top language](https://img.shields.io/github/languages/top/Fairbanks-io/PayPal-IPN-Listener.svg)
 ![Docker Pulls](https://img.shields.io/docker/pulls/fairbanksio/paypal-ipn-listener.svg)
-![GitHub](https://img.shields.io/github/license/Fairbanks-io/PayPal-IPN-Listener.svg)
 ![GitHub last commit](https://img.shields.io/github/last-commit/Fairbanks-io/PayPal-IPN-Listener.svg)
+![Lines of code](https://img.shields.io/tokei/lines/github/jonfairbanks/docker-node-init)
+![License](https://img.shields.io/github/license/Fairbanks-io/PayPal-IPN-Listener.svg)
 
 ## Getting Started
 
@@ -46,6 +46,7 @@ The IPN listener should now be running on http://localhost:8888
 This IPN Listener is also available on [Dockerhub](https://hub.docker.com/r/fairbanksio/paypal-ipn-listener).
 
 To launch the Dockerfile, the following can be used as an example:
+
 ```sh
 docker run -d -p 8888:8888 -e 'MONGO_URI=mongodb://user:password@localhost:27018/paypal' --restart unless-stopped --name 'paypal-ipn' fairbanksio/paypal-ipn-listener
 ```
@@ -53,17 +54,18 @@ docker run -d -p 8888:8888 -e 'MONGO_URI=mongodb://user:password@localhost:27018
 The IPN listener should now be running on http://localhost:8888
 
 If you need to get into the container for some reason, simply run the following on the Docker host:
+
 ```sh
 docker exec -it paypal-ipn /bin/bash
 ```
 
 ## Environment Variables
 
-| ENV | Required? | Details | Example |
-|----------------|-----------|------------------------------------------------------------------------------------------------|--------------------------------------------------|
-| `MONGO_URI` | No | What Mongo instance to use. If the ENV is not provided, `mongodb://localhost/paypal` is used. | `mongodb://user:password@localhost:27018/paypal` |
-| `LOG_LOCATION` | No | Override where the IPN log is written. By default the log is written into the app directory. | `/Logs/ipn.log` |
-| `PORT` | No | Override the application port. Defaults to 8888. | `8889` |
+| ENV            | Required? | Details                                                                                       | Example                                          |
+| -------------- | --------- | --------------------------------------------------------------------------------------------- | ------------------------------------------------ |
+| `MONGO_URI`    | No        | What Mongo instance to use. If the ENV is not provided, `mongodb://localhost/paypal` is used. | `mongodb://user:password@localhost:27018/paypal` |
+| `LOG_LOCATION` | No        | Override where the IPN log is written. By default the log is written into the app directory.  | `/Logs/ipn.log`                                  |
+| `PORT`         | No        | Override the application port. Defaults to 8888.                                              | `8889`                                           |
 
 ## Configure Nginx
 
