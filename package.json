@@ -1,6 +1,6 @@
 {
   "name": "paypal-ipn-listener",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Node.js & MongoDB based PayPal IPN Listener",
   "main": "index.js",
   "dependencies": {
