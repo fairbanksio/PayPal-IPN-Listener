@@ -9,13 +9,13 @@ RUN mkdir /app && chown -R node:node /app
 WORKDIR /app
 USER node
 COPY --chown=node:node package*.json ./
-RUN  npm install --no-optional --silent && npm cache clean --force > "/dev/null" 2>&1
+RUN  npm install --no-optional && npm cache clean --force
 
 # Development ENV
 FROM base as dev
 ENV NODE_ENV=development
 ENV PATH=/app/node_modules/.bin:$PATH
-RUN npm install --only=development --no-optional --silent && npm cache clean --force > "/dev/null" 2>&1
+RUN npm install --only=development --no-optional && npm cache clean --force
 CMD ["nodemon", "index.js", "--inspect=0.0.0.0:9229"]
 
 # Source
