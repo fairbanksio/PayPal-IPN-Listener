@@ -20,6 +20,7 @@
     "eslint-plugin-spellcheck": "^0.0.17"
   },
   "scripts": {
+    "start": "node index.js",
     "test": "echo \"Warning: no test(s) specified\" && exit 0",
     "lint": "./node_modules/eslint/bin/eslint.js .",
     "lint-fix": "./node_modules/eslint/bin/eslint.js . --fix"
