@@ -1,0 +1,13 @@
+{{- if or (and .Values.autoscaling.enabled (gt (.Values.autoscaling.minReplicas | int) 1)) (gt (.Values.replicaCount | int) 1) -}}
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  labels:
+    {{- include "paypal-ipn-listener.labels" . | nindent 4 }}
+  name: {{ include "paypal-ipn-listener.fullname" . }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "paypal-ipn-listener.selectorLabels" . | nindent 6 }}
+  minAvailable: {{ .Values.minAvailable }}
+{{- end }}
