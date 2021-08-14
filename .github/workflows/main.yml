@@ -90,31 +90,31 @@ jobs:
           release_name: Docker Release v${{ steps.update-versions.outputs.version }}
           body: |
             The latest version(s) can be launched with:
-              - `docker run -d -p 8080:8080 --name docker-node-app --restart always fairbanksio/paypal-ipn-listener:${{ steps.update-versions.outputs.version }}`
+              - `docker run -d -p 8080:8080 --name paypal-ipn-listener --restart always fairbanksio/paypal-ipn-listener:${{ steps.update-versions.outputs.version }}`
           draft: false
           prerelease: false
 
-      - name: Push Helm Chart to Github Container Registry
-        id: push-helm-github
-        uses: bsord/helm-push@v4
-        with:
-          useOCIRegistry: true
-          registry-url: https://ghcr.io/fairbanksio/paypal-ipn-listener
-          username: jonfairbanks
-          access-token: ${{ secrets.GITHUB_TOKEN }}
-          force: true
-          chart-folder: chart
+      # - name: Push Helm Chart to Github Container Registry
+      #   id: push-helm-github
+      #   uses: bsord/helm-push@v4
+      #   with:
+      #     useOCIRegistry: true
+      #     registry-url: https://ghcr.io/fairbanksio/paypal-ipn-listener
+      #     username: jonfairbanks
+      #     access-token: ${{ secrets.GITHUB_TOKEN }}
+      #     force: true
+      #     chart-folder: chart
 
-      - name: Push Helm Chart to DigitalOcean Container Registry
-        id: push-helm-digital-ocean
-        uses: bsord/helm-push@v4
-        with:
-          useOCIRegistry: true
-          registry-url: https://registry.digitalocean.com/fairbanks-io/docker-node-app
-          username: ${{ secrets.DIGITAL_OCEAN_REGISTRY_TOKEN }}
-          access-token: ${{ secrets.DIGITAL_OCEAN_REGISTRY_TOKEN }}
-          force: true
-          chart-folder: chart
+      # - name: Push Helm Chart to DigitalOcean Container Registry
+      #   id: push-helm-digital-ocean
+      #   uses: bsord/helm-push@v4
+      #   with:
+      #     useOCIRegistry: true
+      #     registry-url: https://registry.digitalocean.com/fairbanks-io/paypal-ipn-listener
+      #     username: ${{ secrets.DIGITAL_OCEAN_REGISTRY_TOKEN }}
+      #     access-token: ${{ secrets.DIGITAL_OCEAN_REGISTRY_TOKEN }}
+      #     force: true
+      #     chart-folder: chart
 
       - uses: act10ns/slack@v1
         with:
